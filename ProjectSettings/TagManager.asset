@@ -8,6 +8,8 @@ TagManager:
   - ItemBottle
   - ItemFood
   - sound
+  - House
+  - door
   layers:
   - Default
   - TransparentFX
