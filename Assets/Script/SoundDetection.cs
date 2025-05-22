@@ -11,7 +11,7 @@ public class PlayerSoundDetection : MonoBehaviour
     void Start()
     {
         soundOverlay = GetComponentInChildren<BoxCollider>();
-        rb = GetComponentInChildren<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
