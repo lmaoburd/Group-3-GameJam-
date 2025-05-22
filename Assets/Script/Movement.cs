@@ -69,7 +69,7 @@ public class Movement : MonoBehaviour
             cam1.SetActive(true);
             cam2.SetActive(false);
             controller.enabled = false;
-            transform.position = new Vector3(12, 13, -12);
+            transform.position = new Vector3(12, 3, -12);
             controller.enabled = true;
         }
     }
