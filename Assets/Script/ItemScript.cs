@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ItemScript : MonoBehaviour
 {
+    public static ItemScript instance;
     public GameObject[] items;         // The world item objects (should be tagged)
     public Image[] itemCheckBox;       // UI indicators for each item
     public GameObject pressPanel;
@@ -12,6 +13,10 @@ public class ItemScript : MonoBehaviour
     private int currentItemIndex = -1; // -1 = no item held
     private bool isPress = false;
 
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         pressPanel.SetActive(false);
@@ -67,5 +72,15 @@ public class ItemScript : MonoBehaviour
         pressPanel.SetActive(false);
         itemCheckBox[newIndex].color = Color.green;
         currentItemIndex = newIndex;
+    }
+
+    public int GetHeldItemIndex()
+    {
+        return currentItemIndex;
+    }
+
+    public void ResetHeldItem()
+    {
+        currentItemIndex = -1;
     }
 }
