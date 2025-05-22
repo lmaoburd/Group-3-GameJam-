@@ -5,9 +5,14 @@ using UnityEngine;
 public class TableItem : MonoBehaviour
 {
     public GameObject[] itemsPosition;
+    public GameObject pressPanel;
 
     private bool isPress = false;
 
+    private void Start()
+    {
+        pressPanel.SetActive(false);
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
@@ -18,6 +23,8 @@ public class TableItem : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        pressPanel.SetActive(true);
+
         if (other.CompareTag("Player") && isPress)
         {
             int currentIndex = ItemScript.instance.GetHeldItemIndex();
@@ -26,11 +33,8 @@ public class TableItem : MonoBehaviour
                 var currentItem = ItemScript.instance.items[currentIndex];
 
                 // Move the item to the table's position
-                currentItem.transform.position = itemsPosition[0].transform.position;
+                currentItem.transform.position = itemsPosition[currentIndex].transform.position;
                 currentItem.SetActive(true);
-
-                // Reset UI
-                ItemScript.instance.itemCheckBox[currentIndex].color = Color.white;
 
                 // Reset held item
                 ItemScript.instance.ResetHeldItem();
@@ -38,5 +42,10 @@ public class TableItem : MonoBehaviour
 
             isPress = false;
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        pressPanel.SetActive(false);
     }
 }
