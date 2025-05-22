@@ -58,7 +58,7 @@ public class ItemScript : MonoBehaviour
         if (currentItemIndex != -1 && currentItemIndex != newIndex)
         {
             items[currentItemIndex].SetActive(true);
-            items[currentItemIndex].transform.position = transform.position + transform.forward;
+            items[currentItemIndex].transform.position = transform.position;
             itemCheckBox[currentItemIndex].color = Color.white;
         }
 
