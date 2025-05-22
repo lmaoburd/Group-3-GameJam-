@@ -13,6 +13,7 @@ public class TableItem : MonoBehaviour
     {
         pressPanel.SetActive(false);
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
@@ -35,6 +36,12 @@ public class TableItem : MonoBehaviour
                 // Move the item to the table's position
                 currentItem.transform.position = itemsPosition[currentIndex].transform.position;
                 currentItem.SetActive(true);
+
+                currentItem.transform.position = itemsPosition[0].transform.position;
+                currentItem.SetActive(true);
+
+                // Reset UI
+                ItemScript.instance.itemCheckBox[currentIndex].color = Color.white;
 
                 // Reset held item
                 ItemScript.instance.ResetHeldItem();
