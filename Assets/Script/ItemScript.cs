@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemScript : MonoBehaviour
 {
+    public static ItemScript instance;
+
     public GameObject[] items;         // The world item objects (should be tagged)
     public Image[] itemCheckBox;       // UI indicators for each item
     public GameObject pressPanel;
@@ -12,6 +15,12 @@ public class ItemScript : MonoBehaviour
     private int currentItemIndex = -1; // -1 = no item held
     private bool isPress = false;
 
+    public bool haveItem;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         pressPanel.SetActive(false);
@@ -30,16 +39,17 @@ public class ItemScript : MonoBehaviour
         if (other.CompareTag("Item"))
         {
             pressPanel.SetActive(true);
-        }
-        if (isPress)
-        {
-            for (int i = 0; i < items.Length; i++)
+
+            if (isPress)
             {
-                if (other.gameObject == items[i])
+                isPress = false; // move this here to avoid unintended repeat pickup
+                for (int i = 0; i < items.Length; i++)
                 {
-                    SwapItem(i);
-                    isPress = false;
-                    break;
+                    if (other.gameObject == items[i])
+                    {
+                        SwapItem(i);
+                        break;
+                    }
                 }
             }
         }
@@ -67,5 +77,14 @@ public class ItemScript : MonoBehaviour
         pressPanel.SetActive(false);
         itemCheckBox[newIndex].color = Color.green;
         currentItemIndex = newIndex;
+    }
+    public int GetHeldItemIndex()
+    {
+        return currentItemIndex;
+    }
+
+    public void ResetHeldItem()
+    {
+        currentItemIndex = -1;
     }
 }
