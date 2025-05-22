@@ -6,7 +6,7 @@ public class PlayerSoundDetection : MonoBehaviour
 {
     public BoxCollider soundOverlay;
     public Rigidbody rb;
-
+    
     bool isCrouching;
     void Start()
     {
@@ -16,10 +16,11 @@ public class PlayerSoundDetection : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.C) || rb.velocity == new Vector3(0,0,0))
+        if (Input.GetKey(KeyCode.C))
         {
             gameObject.GetComponent<Renderer>().material.color = Color.green;
             soundOverlay.enabled = false;
+
         }
         else
         {
