@@ -1,59 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; // For scene loading or ending the game
+using UnityEngine.UI;
 
 public class ItemScript : MonoBehaviour
 {
-    public GameObject[] items;
-    public GameObject[] itemCheckBox;
+    public GameObject[] items;         // The world item objects (should be tagged)
+    public Image[] itemCheckBox;       // UI indicators for each item
+    public GameObject pressPanel;
 
-    private bool[] collected;
+    private int currentItemIndex = -1; // -1 = no item held
+    private bool isPress = false;
 
-    void Start()
+    private void Start()
     {
-        collected = new bool[items.Length];
+        pressPanel.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
+    void Update()
     {
-        if (other.CompareTag("ItemFood"))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            CollectItem(0);
-        }
-
-        if (other.CompareTag("ItemBootle"))
-        {
-            CollectItem(1);
+            isPress = true;
         }
     }
 
-    void CollectItem(int index)
+    private void OnTriggerStay(Collider other)
     {
-        if (!collected[index])
+        if (other.CompareTag("Item"))
         {
-            collected[index] = true;
-            items[index].SetActive(false);
-            itemCheckBox[index].SetActive(true);
-
-            CheckAllItemsCollected();
+            pressPanel.SetActive(true);
+        }
+        if (isPress)
+        {
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (other.gameObject == items[i])
+                {
+                    SwapItem(i);
+                    isPress = false;
+                    break;
+                }
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            pressPanel.SetActive(false);
         }
     }
 
-    void CheckAllItemsCollected()
+    void SwapItem(int newIndex)
     {
-        foreach (bool isCollected in collected)
+        // Drop current item
+        if (currentItemIndex != -1 && currentItemIndex != newIndex)
         {
-            if (!isCollected)
-                return;
+            items[currentItemIndex].SetActive(true);
+            items[currentItemIndex].transform.position = transform.position + transform.forward;
+            itemCheckBox[currentItemIndex].color = Color.white;
         }
 
-        // All items are collected!
-        Debug.Log("All mission items collected! Game Finished!");
-
-        // Example action: load finish scene or show UI
-        // SceneManager.LoadScene("WinScene");
-        // OR show a finish message
-        // finishUI.SetActive(true);
+        // Pick up new item
+        items[newIndex].SetActive(false);
+        pressPanel.SetActive(false);
+        itemCheckBox[newIndex].color = Color.green;
+        currentItemIndex = newIndex;
     }
 }
