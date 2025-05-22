@@ -9,11 +9,14 @@ public class Mainmenu : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
-    
+
     public void Quit()
     {
         Application.Quit();
     }
 
-
+    public void Back()
+    {
+        SceneManager.LoadScene(0);
+    }
 }

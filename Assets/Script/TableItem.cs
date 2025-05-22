@@ -6,12 +6,15 @@ public class TableItem : MonoBehaviour
 {
     public GameObject[] itemsPosition;
     public GameObject pressPanel;
+    public GameObject winPanel; // ?? UI Panel shown on win
 
     private bool isPress = false;
+    private int placedItemCount = 0;
 
     private void Start()
     {
         pressPanel.SetActive(false);
+        winPanel.SetActive(false); // Hide at start
     }
 
     private void Update()
@@ -33,15 +36,20 @@ public class TableItem : MonoBehaviour
             {
                 var currentItem = ItemScript.instance.items[currentIndex];
 
-                // Move the item to the table's position
+                // Move the item to the correct table position
                 currentItem.transform.position = itemsPosition[currentIndex].transform.position;
                 currentItem.SetActive(true);
 
-                currentItem.transform.position = itemsPosition[0].transform.position;
-                currentItem.SetActive(true);
+                // Mark item as placed
+                placedItemCount++;
+                Debug.Log("Items Placed: " + placedItemCount);
 
-                // Reset UI
-                ItemScript.instance.itemCheckBox[currentIndex].color = Color.white;
+                // Check for win condition
+                if (placedItemCount >= itemsPosition.Length)
+                {
+                    winPanel.SetActive(true); // Show the win panel!
+                    Debug.Log("?? YOU WIN!");
+                }
 
                 // Reset held item
                 ItemScript.instance.ResetHeldItem();
