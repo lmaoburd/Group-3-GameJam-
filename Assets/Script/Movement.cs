@@ -15,7 +15,8 @@ public class Movement : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
-
+    public GameObject cam1;
+    public GameObject cam2;
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -45,5 +46,31 @@ public class Movement : MonoBehaviour
         // Apply gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Debug.Log("Hit: " + hit.gameObject.name);
+
+        if (hit.gameObject.CompareTag("House"))
+        {
+            Debug.Log("Entering house...");
+            cam1.SetActive(false);
+            cam2.SetActive(true);
+            controller.enabled = false; 
+            transform.position = new Vector3(4, 18, -215);
+            controller.enabled = true;
+        }
+
+        if (hit.gameObject.CompareTag("door"))
+        {
+            Debug.Log("Exiting house...");
+            cam1.SetActive(true);
+            cam2.SetActive(false);
+            controller.enabled = false;
+            transform.position = new Vector3(12, 13, -12);
+            controller.enabled = true;
+        }
     }
 }
