@@ -10,6 +10,8 @@ TagManager:
   - sound
   - House
   - door
+  - One
+  - Two
   layers:
   - Default
   - TransparentFX
